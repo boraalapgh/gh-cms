@@ -8,6 +8,13 @@ Build a Figma/Notion-like CMS for creating e-learning content. Block-based edito
 
 **Design:** Minimal black/white/grey prototype aesthetic. Clean, functional, scalable.
 
+**UI Guidelines:**
+- Use shadcn/ui components with default styling (Button, Input, Textarea, Select, Switch, Card, Tabs, Dialog)
+- Keep editor UI simple and neutral - theme colors come later
+- Use `bg-muted`, `text-muted-foreground`, `border` for subtle styling
+- Preview panel (center) may use content theme colors for learner-facing preview
+- Focus on functionality over decoration
+
 ---
 
 ## Environment Variables

@@ -55,7 +55,8 @@ Organization
 | Database | PostgreSQL via Neon |
 | ORM | Drizzle |
 | State | Zustand |
-| Styling | Tailwind CSS 4 + Radix UI |
+| Styling | Tailwind CSS 4 + shadcn/ui (Radix primitives) |
+| UI Approach | Simple black & white, themeable later |
 | Drag & Drop | @dnd-kit |
 | Rich Text | TipTap (planned) |
 
@@ -804,34 +805,50 @@ Full taxonomy in `skillsets-taxonomy.json`.
 
 ## 9. Design System
 
-### Colors
+### CMS Editor UI (What You Build)
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| Primary purple | `#5a14bd` | Buttons, accents, icons |
-| Dark purple | `#2e0a61` | Dark backgrounds |
-| Light purple bg | `#f3ecfd` | Cards, quote blocks |
-| Pink accent | `#fff5fa` | Badges, author tags |
-| Text dark | `#1a1a1a` | Headings |
-| Text medium | `#4d4d4d` | Body text |
+**Keep it simple.** Use shadcn/ui components with default black & white styling. Theme colors will be added later.
 
-### Component Styles
+| Component | shadcn Component | Notes |
+|-----------|------------------|-------|
+| Buttons | `<Button>` | Default variants (default, outline, ghost) |
+| Inputs | `<Input>`, `<Textarea>` | Standard form controls |
+| Dropdowns | `<Select>` | For type selection, settings |
+| Switches | `<Switch>` | For boolean toggles |
+| Cards | `<Card>` | For panels, grouped settings |
+| Tabs | `<Tabs>` | For Design/Settings panels |
+| Dialog | `<Dialog>` | For modals (publish, validation) |
+| Tooltip | `<Tooltip>` | For help text |
+| Badge | `<Badge>` | For status indicators |
 
-| Component | Tailwind Classes |
-|-----------|------------------|
-| Option cards | `bg-white rounded-2xl border-[6px] border-purple-600/50` |
-| Speech bubble | `bg-white/95 backdrop-blur-sm rounded-2xl` |
-| Tip card | `bg-purple-600 text-white rounded-xl p-6` |
-| Quote block | `bg-purple-50 rounded-xl p-6` |
-| Nav buttons | `bg-white rounded-full p-4 shadow-[0px_4px_40px_rgba(0,0,0,0.16)]` |
-| Pagination | `bg-black/15 backdrop-blur-md rounded-full px-4 py-2` |
+**Layout:**
+- Use `border` for panel separation
+- Use `bg-muted` for subtle backgrounds
+- Use standard shadcn spacing and typography
+- Keep focus on functionality, not decoration
 
-### Shadows
+### Content Preview Colors (Reference Only)
 
-```css
-/* Floating elements */
-box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.16);
-```
+These colors are for the **learner-facing preview** inside the center panel, not the CMS UI itself:
+
+| Token | Value | Usage in Preview |
+|-------|-------|------------------|
+| Primary purple | `#5a14bd` | Activity accents |
+| Dark purple | `#2e0a61` | Dark backgrounds (Daily Dilemma, In Practice) |
+| Light purple bg | `#f3ecfd` | Quote blocks |
+| Text dark | `#1a1a1a` | Preview headings |
+| Text medium | `#4d4d4d` | Preview body text |
+
+### Preview Component Styles
+
+These apply to the **center panel preview** rendering:
+
+| Preview Element | Tailwind Classes |
+|-----------------|------------------|
+| Option cards | `bg-white rounded-2xl border-2 border-zinc-200` |
+| Speech bubble | `bg-white rounded-2xl shadow-sm` |
+| Tip card | `bg-zinc-900 text-white rounded-xl p-6` |
+| Quote block | `bg-zinc-100 rounded-xl p-6` |
 
 ---
 

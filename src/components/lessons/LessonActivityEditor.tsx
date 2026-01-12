@@ -29,6 +29,7 @@ import {
   Loader2,
   Save,
   GripVertical,
+  Mic,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -48,6 +49,7 @@ const ACTIVITY_TYPE_ICONS: Record<ActivityType, React.ReactNode> = {
   quick_dive: <BookOpen className="h-5 w-5" />,
   daily_dilemma: <HelpCircle className="h-5 w-5" />,
   in_practice: <Columns className="h-5 w-5" />,
+  podcast: <Mic className="h-5 w-5" />,
 };
 
 interface ActivityDetails {

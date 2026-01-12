@@ -11,3 +11,4 @@ export * from "./lessons";
 export * from "./courses";
 export * from "./assessments";
 export * from "./certificates";
+export * from "./skillsets";

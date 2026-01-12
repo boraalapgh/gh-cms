@@ -25,6 +25,18 @@ This document supplements `ELEARNING_CMS_PROMPT.md` with detailed authoring expe
 
 ---
 
+## UI Guidelines
+
+**Keep the CMS editor UI simple.** Use shadcn/ui components with default black & white styling. Theme colors will be added later.
+
+- Use standard shadcn components: `Button`, `Input`, `Textarea`, `Select`, `Switch`, `Card`, `Tabs`, `Dialog`
+- Use `border` for panel separation
+- Use `bg-muted` for subtle backgrounds
+- Focus on functionality over decoration
+- Preview colors (in center panel) are separate from editor UI colors
+
+---
+
 ## Table of Contents
 
 1. [User Roles & Permissions](#1-user-roles--permissions) ❌

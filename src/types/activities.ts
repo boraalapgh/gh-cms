@@ -54,13 +54,26 @@ export interface QuizConfig {
   attemptsAllowed?: number;
 }
 
+// Podcast activity configuration
+export interface PodcastConfig {
+  type: "podcast";
+  audioSource: "upload" | "generated" | "url";
+  audioUrl?: string;
+  coverImage?: string;
+  voiceId?: string;
+  voiceSpeed?: "slow" | "normal" | "fast";
+  transcriptEnabled: boolean;
+  transcript?: string;
+}
+
 // Union type for all activity configs
 export type ActivityConfig =
   | VideoActivityConfig
   | DailyDilemmaConfig
   | QuickDiveConfig
   | InPracticeConfig
-  | QuizConfig;
+  | QuizConfig
+  | PodcastConfig;
 
 // Default configurations for each activity type
 export const defaultActivityConfigs: Record<ActivityType, ActivityConfig> = {
@@ -93,6 +106,16 @@ export const defaultActivityConfigs: Record<ActivityType, ActivityConfig> = {
     timeLimit: undefined,
     attemptsAllowed: undefined,
   },
+  podcast: {
+    type: "podcast",
+    audioSource: "generated",
+    audioUrl: undefined,
+    coverImage: undefined,
+    voiceId: "sofia",
+    voiceSpeed: "normal",
+    transcriptEnabled: true,
+    transcript: undefined,
+  },
 };
 
 // Block types available for each activity type
@@ -102,6 +125,7 @@ export const activityBlockPalette: Record<ActivityType, BlockType[]> = {
   quick_dive: ["text", "heading", "image", "video", "callout", "list", "divider", "section"],
   in_practice: ["slide_deck", "slide", "two_column", "text", "heading", "image", "callout", "list", "divider"],
   quiz: ["quiz_question", "option", "text", "heading", "image", "divider"],
+  podcast: ["text", "heading", "callout", "divider"],
 };
 
 // Activity type display information
@@ -130,5 +154,10 @@ export const activityTypeInfo: Record<ActivityType, { label: string; description
     label: "Quiz",
     description: "Scored assessment with questions",
     icon: "CheckSquare",
+  },
+  podcast: {
+    label: "Podcast",
+    description: "Audio content with script and chapters",
+    icon: "Mic",
   },
 };

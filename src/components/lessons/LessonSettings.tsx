@@ -9,11 +9,13 @@
 
 import { useMemo, useState } from "react";
 import { useEditorStore } from "@/stores/editor-store";
-import { LessonConfig } from "@/types";
+import { LessonConfig, SkillsetTag } from "@/types";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SkillsetPicker } from "../skillsets";
+import { buildTagFromSkillset } from "@/lib/skillsets";
 import {
   Plus,
   X,
@@ -118,12 +120,21 @@ export function LessonSettings() {
     lessonActivities,
     removeLessonActivity,
     reorderLessonActivities,
+    skillsetId,
+    setSkillsetId,
   } = useEditorStore();
   const config = lessonConfig as LessonConfig | null;
 
   const [newObjective, setNewObjective] = useState("");
   const [newPrerequisite, setNewPrerequisite] = useState("");
   const [showActivityPicker, setShowActivityPicker] = useState(false);
+
+  // Build tag from stored skillsetId
+  const currentSkillsetTag = skillsetId ? buildTagFromSkillset(skillsetId) : undefined;
+
+  const handleSkillsetChange = (tag: SkillsetTag | undefined) => {
+    setSkillsetId(tag?.skillsetId ?? null);
+  };
 
   // DnD sensors
   const sensors = useSensors(
@@ -329,10 +340,20 @@ export function LessonSettings() {
         )}
       </div>
 
+      {/* Skillset Tagging */}
+      <div className="space-y-3">
+        <SkillsetPicker
+          context="lesson"
+          value={currentSkillsetTag}
+          onChange={handleSkillsetChange}
+          label="Skillset Category"
+        />
+      </div>
+
       {/* Intro/Outro Guidance */}
-      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <h4 className="text-sm font-medium text-blue-900 mb-2">Intro & Outro Content</h4>
-        <p className="text-xs text-blue-700">
+      <div className="p-4 bg-muted rounded-lg border">
+        <h4 className="text-sm font-medium mb-2">Intro & Outro Content</h4>
+        <p className="text-xs text-muted-foreground">
           Use the block canvas to add intro content at the beginning and outro content at
           the end of your lesson. The activities will appear between them in the learner view.
         </p>

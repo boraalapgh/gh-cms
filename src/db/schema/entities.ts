@@ -28,7 +28,8 @@ export const activityTypeEnum = pgEnum("activity_type", [
   "daily_dilemma",
   "quick_dive",
   "in_practice",
-  "quiz"
+  "quiz",
+  "podcast"
 ]);
 
 // Main entities table
@@ -39,6 +40,7 @@ export const entities = pgTable("entities", {
   description: text("description"),
   status: entityStatusEnum("status").notNull().default("draft"),
   version: integer("version").notNull().default(1),
+  revision: integer("revision").notNull().default(1), // Auto-increments on every save for conflict detection
   settings: jsonb("settings").default({}),
   content: jsonb("content"), // Generic content storage (e.g., certificate templates)
   createdAt: timestamp("created_at").notNull().defaultNow(),

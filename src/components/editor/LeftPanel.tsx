@@ -44,6 +44,7 @@ import {
   Play,
   BookOpen,
   Loader2,
+  Mic,
 } from "lucide-react";
 
 // Activity type icons mapping
@@ -53,6 +54,7 @@ const ACTIVITY_TYPE_ICONS: Record<ActivityType, React.ReactNode> = {
   quick_dive: <BookOpen className="h-4 w-4" />,
   daily_dilemma: <HelpCircle className="h-4 w-4" />,
   in_practice: <Columns className="h-4 w-4" />,
+  podcast: <Mic className="h-4 w-4" />,
 };
 
 // All block tools configuration with icons

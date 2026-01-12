@@ -41,6 +41,10 @@ interface EditorState {
   activityType: ActivityType | null;
   activityConfig: ActivityConfig | null;
 
+  // Skillset tagging
+  subskillId: string | null; // For activities
+  skillsetId: string | null; // For lessons/courses
+
   // Lesson-specific state
   lessonConfig: LessonConfig | null;
   lessonActivities: LessonActivityRef[];
@@ -80,6 +84,10 @@ interface EditorActions {
   // Entity
   setEntity: (entityId: string, entityType: string, activityType?: ActivityType) => void;
   setActivityConfig: (config: Partial<ActivityConfig>) => void;
+
+  // Skillset tagging
+  setSubskillId: (subskillId: string | null) => void;
+  setSkillsetId: (skillsetId: string | null) => void;
 
   // Lesson actions
   setLessonConfig: (config: Partial<LessonConfig>) => void;
@@ -188,6 +196,8 @@ const initialState: EditorState = {
   entityType: null,
   activityType: null,
   activityConfig: null,
+  subskillId: null,
+  skillsetId: null,
   lessonConfig: null,
   lessonActivities: [],
   courseConfig: null,
@@ -236,6 +246,21 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           state.activityConfig = { ...state.activityConfig, ...config } as ActivityConfig;
           state.isDirty = true;
         }
+      });
+    },
+
+    // Skillset tagging
+    setSubskillId: (subskillId) => {
+      set((state) => {
+        state.subskillId = subskillId;
+        state.isDirty = true;
+      });
+    },
+
+    setSkillsetId: (skillsetId) => {
+      set((state) => {
+        state.skillsetId = skillsetId;
+        state.isDirty = true;
       });
     },
 

@@ -667,27 +667,34 @@ interface RecapContent {
 
 ## Design System Reference
 
-### Colors
+### CMS Editor UI
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| Primary purple | `#5a14bd` | Buttons, accents, icons |
-| Dark purple | `#2e0a61` | Dark backgrounds (Daily Dilemma, In Practice) |
-| Light purple bg | `#f3ecfd` | Cards, quote blocks |
-| Pink accent | `#fff5fa` | Badges, author tags |
-| Text dark | `#1a1a1a` | Headings |
-| Text medium | `#4d4d4d` | Body text |
+**Use shadcn/ui components with default black & white styling.** Theme colors will be added later.
 
-### Components
+- Use `<Button>`, `<Input>`, `<Textarea>`, `<Select>`, `<Switch>`, `<Card>`, `<Tabs>`
+- Keep UI simple and functional
+- Use `border` for panel separation, `bg-muted` for subtle backgrounds
 
-| Component | Style |
-|-----------|-------|
-| Option cards | White, rounded-2xl, border-[6px] border-purple, tilted ±9° |
-| Speech bubble | White/95 opacity, rounded-2xl, triangle pointer |
-| Tip card | bg-purple text-white, rounded-xl, p-6 |
-| Quote block | bg-light-purple, rounded-xl, p-6 |
-| Navigation buttons | White circle, shadow, p-4 |
-| Pagination pill | Black/15 backdrop-blur, rounded-full |
+### Content Preview Colors (For Center Panel Preview Only)
+
+These colors apply to the **learner-facing preview** rendered in the center panel:
+
+| Token | Value | Usage in Preview |
+|-------|-------|------------------|
+| Dark background | `#2e0a61` or `bg-zinc-900` | Daily Dilemma, In Practice backgrounds |
+| Light background | `#f3ecfd` or `bg-zinc-100` | Quote blocks |
+| Text dark | `#1a1a1a` | Preview headings |
+| Text medium | `#4d4d4d` | Preview body text |
+
+### Preview Components (Center Panel Only)
+
+| Preview Element | Description |
+|-----------------|-------------|
+| Option cards | White, rounded-2xl, border-2, tilted ±9° |
+| Speech bubble | White, rounded-2xl, shadow |
+| Tip card | Dark bg, white text, rounded-xl |
+| Quote block | Light gray bg, rounded-xl |
+| Navigation buttons | White circle, shadow |
 
 ---
 
@@ -904,6 +911,8 @@ PODCAST CONTENT
 
 ## Component Implementation Examples
 
+> **Note:** These examples separate **CMS Editor UI** (Left/Right panels - use shadcn, black & white) from **Content Preview** (Center panel - uses theme colors for learner experience).
+
 ### Daily Dilemma Components
 
 **Store Types** (`src/types/daily-dilemma.ts`):
@@ -954,8 +963,8 @@ export interface DailyDilemmaOption {
 **Left Panel Component** (`src/components/editor/DailyDilemmaLeftPanel.tsx`):
 
 ```typescript
-import { Plus, MessageSquare, HelpCircle, Trash2 } from 'lucide-react';
-import { useSortable } from '@dnd-kit/sortable';
+import { Plus, MessageSquare, HelpCircle, Trash2, GripVertical } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   content: DailyDilemmaContent;
@@ -986,41 +995,44 @@ export function DailyDilemmaLeftPanel({
     <div className="flex flex-col h-full">
       {/* Tools Section */}
       <div className="p-4 border-b">
-        <h3 className="text-xs font-semibold text-zinc-500 uppercase mb-3">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase mb-3">
           Add Screens
         </h3>
         <div className="space-y-2">
-          <button
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
             onClick={() => onAddScreen('anecdote')}
-            className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-zinc-100 text-sm"
           >
-            <MessageSquare size={16} className="text-zinc-500" />
-            <span>Anecdote Screen</span>
-            <Plus size={14} className="ml-auto text-zinc-400" />
-          </button>
-          <button
+            <MessageSquare size={16} className="mr-2" />
+            Anecdote Screen
+            <Plus size={14} className="ml-auto" />
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
             onClick={() => onAddScreen('dilemma')}
-            className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-zinc-100 text-sm"
           >
-            <HelpCircle size={16} className="text-zinc-500" />
-            <span>Dilemma Screen</span>
-            <Plus size={14} className="ml-auto text-zinc-400" />
-          </button>
+            <HelpCircle size={16} className="mr-2" />
+            Dilemma Screen
+            <Plus size={14} className="ml-auto" />
+          </Button>
           {selectedDilemmaScreen && (
-            <button
+            <Button
+              variant="ghost"
+              className="w-full justify-start"
               onClick={() => onAddOption(selectedDilemmaScreen.id)}
-              className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-zinc-100 text-sm"
             >
-              <Plus size={16} className="text-zinc-500" />
-              <span>Add Option Card</span>
-            </button>
+              <Plus size={16} className="mr-2" />
+              Add Option Card
+            </Button>
           )}
         </div>
       </div>
 
       {/* Layers Section */}
       <div className="flex-1 overflow-auto p-4">
-        <h3 className="text-xs font-semibold text-zinc-500 uppercase mb-3">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase mb-3">
           Screens ({content.screens.length})
         </h3>
         <div className="space-y-1">
@@ -1045,28 +1057,26 @@ function ScreenLayer({ screen, isSelected, selection, onSelect, onDelete, onDele
   const isDilemma = screen.type === 'dilemma';
 
   return (
-    <div>
+    <div className="group">
       <button
         onClick={() => onSelect({ type: 'screen', screenId: screen.id })}
-        className={`flex items-center gap-2 w-full p-2 rounded-lg text-sm ${
-          isSelected ? 'bg-zinc-100' : 'hover:bg-zinc-50'
+        className={`flex items-center gap-2 w-full p-2 rounded-md text-sm ${
+          isSelected ? 'bg-muted' : 'hover:bg-muted/50'
         }`}
       >
-        <span className="text-zinc-400">≡</span>
-        {isDilemma ? (
-          <HelpCircle size={14} className="text-purple-500" />
-        ) : (
-          <MessageSquare size={14} className="text-blue-500" />
-        )}
+        <GripVertical size={14} className="text-muted-foreground" />
+        {isDilemma ? <HelpCircle size={14} /> : <MessageSquare size={14} />}
         <span className="truncate flex-1 text-left">
           {screen.expertSpeech.slice(0, 30)}...
         </span>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 opacity-0 group-hover:opacity-100"
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
-          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-zinc-200 rounded"
         >
-          <Trash2 size={14} className="text-zinc-400" />
-        </button>
+          <Trash2 size={14} />
+        </Button>
       </button>
 
       {/* Nested options for dilemma screens */}
@@ -1076,20 +1086,20 @@ function ScreenLayer({ screen, isSelected, selection, onSelect, onDelete, onDele
             <button
               key={option.id}
               onClick={() => onSelect({ type: 'option', screenId: screen.id, optionId: option.id })}
-              className={`flex items-center gap-2 w-full p-2 rounded-lg text-sm ${
+              className={`flex items-center gap-2 w-full p-2 rounded-md text-sm ${
                 selection.type === 'option' && selection.optionId === option.id
-                  ? 'bg-zinc-100'
-                  : 'hover:bg-zinc-50'
+                  ? 'bg-muted'
+                  : 'hover:bg-muted/50'
               }`}
             >
-              <span className="w-5 h-5 rounded bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center">
+              <span className="w-5 h-5 rounded bg-muted text-foreground text-xs font-bold flex items-center justify-center border">
                 {option.label}
               </span>
-              <span className="truncate flex-1 text-left text-zinc-600">
+              <span className="truncate flex-1 text-left text-muted-foreground">
                 {option.text.slice(0, 25)}...
               </span>
               {option.isCorrect && (
-                <span className="text-green-500">✓</span>
+                <span className="text-foreground">✓</span>
               )}
             </button>
           ))}
@@ -1107,6 +1117,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface Props {
   content: DailyDilemmaContent;
@@ -1127,16 +1139,16 @@ export function DailyDilemmaRightPanel({
   if (selection.type === 'activity') {
     return (
       <div className="p-4 space-y-6">
-        <div>
+        <div className="space-y-2">
           <Label>Expert Name</Label>
           <Input
             value={content.expertName}
             onChange={(e) => onChange({ expertName: e.target.value })}
-            placeholder="Sofia Rossi"
+            placeholder="Expert name"
           />
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label>Expert Avatar</Label>
           <ImageUpload
             value={content.expertAvatar}
@@ -1144,7 +1156,7 @@ export function DailyDilemmaRightPanel({
           />
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label>Background Image</Label>
           <ImageUpload
             value={content.backgroundImage}
@@ -1152,15 +1164,16 @@ export function DailyDilemmaRightPanel({
           />
         </div>
 
-        <div>
-          <Label>Theme Color</Label>
+        <div className="space-y-2">
+          <Label>Preview Theme Color</Label>
+          <p className="text-xs text-muted-foreground">For learner-facing preview only</p>
           <div className="flex gap-2 mt-2">
             {['#2e0a61', '#0d9488', '#059669', '#db2777'].map((color) => (
               <button
                 key={color}
                 onClick={() => onChange({ themeColor: color })}
-                className={`w-8 h-8 rounded-full ${
-                  content.themeColor === color ? 'ring-2 ring-offset-2 ring-black' : ''
+                className={`w-8 h-8 rounded-full border-2 ${
+                  content.themeColor === color ? 'ring-2 ring-offset-2 ring-foreground' : 'border-border'
                 }`}
                 style={{ backgroundColor: color }}
               />
@@ -1178,23 +1191,25 @@ export function DailyDilemmaRightPanel({
 
     return (
       <div className="p-4 space-y-6">
-        <div>
+        <div className="space-y-2">
           <Label>Screen Type</Label>
           <div className="flex gap-2 mt-2">
-            <button
-              className={`px-3 py-1 rounded ${screen.type === 'anecdote' ? 'bg-zinc-900 text-white' : 'bg-zinc-100'}`}
+            <Button
+              variant={screen.type === 'anecdote' ? 'default' : 'outline'}
+              size="sm"
             >
               Anecdote
-            </button>
-            <button
-              className={`px-3 py-1 rounded ${screen.type === 'dilemma' ? 'bg-zinc-900 text-white' : 'bg-zinc-100'}`}
+            </Button>
+            <Button
+              variant={screen.type === 'dilemma' ? 'default' : 'outline'}
+              size="sm"
             >
               Dilemma
-            </button>
+            </Button>
           </div>
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label>Expert Speech</Label>
           <Textarea
             value={screen.expertSpeech}
@@ -1215,14 +1230,18 @@ export function DailyDilemmaRightPanel({
 
     return (
       <div className="p-4 space-y-6">
-        <div className="flex items-center gap-2 p-3 bg-zinc-100 rounded-lg">
-          <span className="w-8 h-8 rounded bg-purple-600 text-white font-bold flex items-center justify-center">
-            {option.label}
-          </span>
-          <span className="font-medium">Option {option.label}</span>
-        </div>
+        <Card>
+          <CardHeader className="py-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <span className="w-6 h-6 rounded bg-foreground text-background text-xs font-bold flex items-center justify-center">
+                {option.label}
+              </span>
+              Option {option.label}
+            </CardTitle>
+          </CardHeader>
+        </Card>
 
-        <div>
+        <div className="space-y-2">
           <Label>Option Text</Label>
           <Textarea
             value={option.text}
@@ -1240,7 +1259,7 @@ export function DailyDilemmaRightPanel({
           />
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label>Feedback (shown when selected)</Label>
           <Textarea
             value={option.feedback}
@@ -1248,7 +1267,7 @@ export function DailyDilemmaRightPanel({
             placeholder="Enter feedback for this choice..."
             rows={4}
           />
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-muted-foreground">
             This text appears after the learner selects this option.
           </p>
         </div>
@@ -1398,6 +1417,8 @@ export function DailyDilemmaPreview({
 
 ### Quick Dive Block Components
 
+> **Note:** Renderer components use preview colors (learner-facing). Settings components use shadcn (black & white).
+
 **Block Registry** (`src/components/blocks/quick-dive/index.ts`):
 
 ```typescript
@@ -1433,6 +1454,10 @@ export const QuickDiveBlockTools = [
 **Quote Block Example** (`src/components/blocks/quick-dive/QuoteBlock.tsx`):
 
 ```typescript
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 interface QuoteBlockProps {
   content: { text: string; author?: string };
   isSelected: boolean;
@@ -1440,30 +1465,30 @@ interface QuoteBlockProps {
   onChange: (content: { text: string; author?: string }) => void;
 }
 
-// Renderer (Center Panel)
+// Renderer (Center Panel - uses preview styling)
 export function QuoteBlockRenderer({ content, isSelected, onSelect }: QuoteBlockProps) {
   return (
     <div
       onClick={onSelect}
-      className={`bg-purple-50 rounded-xl p-6 cursor-pointer ${
-        isSelected ? 'ring-2 ring-black' : 'hover:ring-1 hover:ring-zinc-300'
+      className={`bg-muted rounded-xl p-6 cursor-pointer ${
+        isSelected ? 'ring-2 ring-foreground' : 'hover:ring-1 hover:ring-border'
       }`}
     >
-      <p className="text-lg font-extrabold text-purple-900 leading-relaxed mb-4">
+      <p className="text-lg font-bold leading-relaxed mb-4">
         {content.text || 'Quote text...'}
       </p>
       {content.author && (
-        <p className="text-sm text-zinc-600">— {content.author}</p>
+        <p className="text-sm text-muted-foreground">— {content.author}</p>
       )}
     </div>
   );
 }
 
-// Settings (Right Panel)
+// Settings (Right Panel - uses shadcn components)
 export function QuoteBlockSettings({ content, onChange }: QuoteBlockProps) {
   return (
     <div className="space-y-4">
-      <div>
+      <div className="space-y-2">
         <Label>Quote Text</Label>
         <Textarea
           value={content.text}
@@ -1472,7 +1497,7 @@ export function QuoteBlockSettings({ content, onChange }: QuoteBlockProps) {
           rows={4}
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <Label>Author (optional)</Label>
         <Input
           value={content.author || ''}
@@ -1488,24 +1513,31 @@ export function QuoteBlockSettings({ content, onChange }: QuoteBlockProps) {
 **Tip Card Block Example** (`src/components/blocks/quick-dive/TipCardBlock.tsx`):
 
 ```typescript
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+
 interface TipCardContent {
   title?: string;
   text: string;
   variant: 'tip' | 'warning' | 'info';
 }
 
+// Preview variant styles (for center panel preview)
 const variantStyles = {
-  tip: 'bg-purple-600 text-white',
-  warning: 'bg-amber-500 text-white',
-  info: 'bg-blue-500 text-white',
+  tip: 'bg-zinc-900 text-white',
+  warning: 'bg-zinc-700 text-white',
+  info: 'bg-zinc-600 text-white',
 };
 
+// Renderer (Center Panel - uses preview styling)
 export function TipCardRenderer({ content, isSelected, onSelect }) {
   return (
     <div
       onClick={onSelect}
       className={`rounded-xl p-6 ${variantStyles[content.variant]} ${
-        isSelected ? 'ring-2 ring-black ring-offset-2' : ''
+        isSelected ? 'ring-2 ring-foreground ring-offset-2' : ''
       }`}
     >
       {content.title && (
@@ -1518,28 +1550,27 @@ export function TipCardRenderer({ content, isSelected, onSelect }) {
   );
 }
 
+// Settings (Right Panel - uses shadcn components)
 export function TipCardSettings({ content, onChange }) {
   return (
     <div className="space-y-4">
-      <div>
+      <div className="space-y-2">
         <Label>Variant</Label>
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2">
           {['tip', 'warning', 'info'].map((variant) => (
-            <button
+            <Button
               key={variant}
+              variant={content.variant === variant ? 'default' : 'outline'}
+              size="sm"
               onClick={() => onChange({ ...content, variant })}
-              className={`px-3 py-1 rounded capitalize ${
-                content.variant === variant
-                  ? variantStyles[variant]
-                  : 'bg-zinc-100'
-              }`}
+              className="capitalize"
             >
               {variant}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
-      <div>
+      <div className="space-y-2">
         <Label>Title (optional)</Label>
         <Input
           value={content.title || ''}
@@ -1547,7 +1578,7 @@ export function TipCardSettings({ content, onChange }) {
           placeholder="Pro tip"
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <Label>Content</Label>
         <Textarea
           value={content.text}

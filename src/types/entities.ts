@@ -6,7 +6,7 @@
 
 export type EntityType = "activity" | "lesson" | "course" | "assessment";
 export type EntityStatus = "draft" | "published";
-export type ActivityType = "video" | "daily_dilemma" | "quick_dive" | "in_practice" | "quiz";
+export type ActivityType = "video" | "daily_dilemma" | "quick_dive" | "in_practice" | "quiz" | "podcast";
 
 // Base entity structure
 export interface Entity {
