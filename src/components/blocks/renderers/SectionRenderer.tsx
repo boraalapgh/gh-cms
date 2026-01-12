@@ -8,12 +8,40 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Block } from "@/types";
+import { Block, BlockType } from "@/types";
 import { useEditorStore } from "@/stores/editor-store";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { BlockWrapper } from "../BlockWrapper";
 import { BlockRenderer } from "../BlockRenderer";
-import { ChevronDown, ChevronRight, Layers } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Layers,
+  Plus,
+  Type,
+  Heading,
+  Image,
+  Video,
+  AlertCircle,
+  List,
+} from "lucide-react";
+
+// Block types that can be added inside a section
+const SECTION_CHILD_BLOCKS: { type: BlockType; label: string; icon: React.ReactNode }[] = [
+  { type: "text", label: "Text", icon: <Type className="h-4 w-4" /> },
+  { type: "heading", label: "Heading", icon: <Heading className="h-4 w-4" /> },
+  { type: "image", label: "Image", icon: <Image className="h-4 w-4" /> },
+  { type: "video", label: "Video", icon: <Video className="h-4 w-4" /> },
+  { type: "callout", label: "Callout", icon: <AlertCircle className="h-4 w-4" /> },
+  { type: "list", label: "List", icon: <List className="h-4 w-4" /> },
+];
 
 interface SectionRendererProps {
   block: Block;
@@ -26,7 +54,7 @@ interface SectionBlockContent {
 }
 
 export function SectionRenderer({ block }: SectionRendererProps) {
-  const { selectedBlockId, updateBlock, blocks } = useEditorStore();
+  const { selectedBlockId, updateBlock, blocks, addBlock, selectBlock } = useEditorStore();
   const content = block.content as unknown as SectionBlockContent;
   const isEditing = selectedBlockId === block.id;
   const [isExpanded, setIsExpanded] = useState(content.defaultExpanded !== false);
@@ -41,6 +69,11 @@ export function SectionRenderer({ block }: SectionRendererProps) {
     updateBlock(block.id, {
       content: { ...content, title: e.target.value },
     });
+  };
+
+  const handleAddChildBlock = (type: BlockType) => {
+    const newBlock = addBlock(type, block.id, children.length);
+    selectBlock(newBlock.id);
   };
 
   const isExpandable = content.isExpandable !== false;
@@ -93,15 +126,60 @@ export function SectionRenderer({ block }: SectionRendererProps) {
       {(!isExpandable || isExpanded) && (
         <div className="p-4 space-y-3 border-t border-zinc-200">
           {children.length === 0 ? (
-            <p className="text-sm text-zinc-400 text-center py-4">
-              Add blocks to this section from the Tools panel
-            </p>
+            <div className="flex flex-col items-center justify-center py-6 gap-3">
+              <p className="text-sm text-zinc-400">This section is empty</p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Block
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  {SECTION_CHILD_BLOCKS.map((item) => (
+                    <DropdownMenuItem
+                      key={item.type}
+                      onClick={() => handleAddChildBlock(item.type)}
+                    >
+                      {item.icon}
+                      <span className="ml-2">{item.label}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           ) : (
-            children.map((childBlock) => (
-              <BlockWrapper key={childBlock.id} block={childBlock}>
-                <BlockRenderer block={childBlock} />
-              </BlockWrapper>
-            ))
+            <>
+              {children.map((childBlock) => (
+                <BlockWrapper key={childBlock.id} block={childBlock}>
+                  <BlockRenderer block={childBlock} />
+                </BlockWrapper>
+              ))}
+              {/* Add more blocks button */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full text-zinc-400 hover:text-zinc-600"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Block
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  {SECTION_CHILD_BLOCKS.map((item) => (
+                    <DropdownMenuItem
+                      key={item.type}
+                      onClick={() => handleAddChildBlock(item.type)}
+                    >
+                      {item.icon}
+                      <span className="ml-2">{item.label}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           )}
         </div>
       )}

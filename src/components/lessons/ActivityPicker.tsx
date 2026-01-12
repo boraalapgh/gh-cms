@@ -33,7 +33,9 @@ import {
   CheckSquare,
   Clock,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
+import { defaultActivityConfigs } from "@/types";
 
 // Activity type icons mapping
 const activityTypeIcons: Record<string, React.ReactNode> = {
@@ -64,6 +66,8 @@ export function ActivityPicker({ open, onOpenChange }: ActivityPickerProps) {
   const { lessonActivities, addLessonActivity } = useEditorStore();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("all");
   const [selectedActivities, setSelectedActivities] = useState<Set<string>>(new Set());
@@ -144,10 +148,53 @@ export function ActivityPicker({ open, onOpenChange }: ActivityPickerProps) {
   };
 
   // Create new activity
-  const handleCreateNew = (type: string) => {
-    // Open activity creation in new tab (will be improved with inline creation)
-    window.open(`/editor/activity/new?type=${type}`, "_blank");
-    onOpenChange(false);
+  const handleCreateNew = async (type: string) => {
+    setIsCreating(true);
+    setCreateError(null);
+
+    try {
+      // Get activity type info for the title
+      const info = activityTypeInfo[type as keyof typeof activityTypeInfo];
+      const defaultTitle = `New ${info?.label || type} Activity`;
+
+      // Create the entity via API
+      const response = await fetch("/api/entities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "activity",
+          title: defaultTitle,
+          settings: {
+            activityType: type,
+            ...defaultActivityConfigs[type as keyof typeof defaultActivityConfigs],
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create activity");
+      }
+
+      const { data: newEntity } = await response.json();
+
+      // Add the activity reference to the lesson
+      const ref: LessonActivityRef = {
+        id: crypto.randomUUID(),
+        entityId: newEntity.id,
+        title: newEntity.title,
+        type: type,
+        order: lessonActivities.length,
+      };
+      addLessonActivity(ref);
+
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Failed to create activity:", error);
+      setCreateError(error instanceof Error ? error.message : "Failed to create activity");
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -277,6 +324,12 @@ export function ActivityPicker({ open, onOpenChange }: ActivityPickerProps) {
           </TabsContent>
 
           <TabsContent value="create" className="mt-4">
+            {createError && (
+              <div className="flex items-center gap-2 p-3 mb-4 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                {createError}
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-3">
               {(Object.keys(activityTypeInfo) as Array<keyof typeof activityTypeInfo>).map(
                 (type) => {
@@ -285,7 +338,8 @@ export function ActivityPicker({ open, onOpenChange }: ActivityPickerProps) {
                     <button
                       key={type}
                       onClick={() => handleCreateNew(type)}
-                      className="flex items-start gap-3 p-4 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 text-left transition-colors"
+                      disabled={isCreating}
+                      className="flex items-start gap-3 p-4 rounded-lg border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 text-left transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <div className="h-10 w-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-500 flex-shrink-0">
                         {activityTypeIcons[type] || <BookOpen className="h-4 w-4" />}
@@ -299,8 +353,14 @@ export function ActivityPicker({ open, onOpenChange }: ActivityPickerProps) {
                 }
               )}
             </div>
+            {isCreating && (
+              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-zinc-500">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Creating activity...
+              </div>
+            )}
             <p className="text-xs text-zinc-400 text-center mt-4">
-              Creating a new activity will open in a new tab. Return here to add it to your lesson.
+              Select an activity type to create and add it to this lesson.
             </p>
           </TabsContent>
         </Tabs>

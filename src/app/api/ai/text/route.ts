@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     const generatedText = completion.choices[0]?.message?.content || "";
 
-    return NextResponse.json({ data: { text: generatedText } });
+    return NextResponse.json({ text: generatedText });
   } catch (error) {
     console.error("Error generating text:", error);
     return NextResponse.json(

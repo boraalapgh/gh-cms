@@ -73,6 +73,80 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// PUT /api/blocks - Bulk save/update blocks for an entity
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { entityId, blocks: blocksToSave } = body;
+
+    if (!entityId || !blocksToSave) {
+      return NextResponse.json(
+        { error: "entityId and blocks are required" },
+        { status: 400 }
+      );
+    }
+
+    // Get existing blocks
+    const existingBlocks = await db
+      .select()
+      .from(blocks)
+      .where(eq(blocks.entityId, entityId));
+
+    const existingIds = new Set(existingBlocks.map((b) => b.id));
+    const newIds = new Set(blocksToSave.map((b: { id: string }) => b.id));
+
+    // Delete removed blocks
+    for (const existing of existingBlocks) {
+      if (!newIds.has(existing.id)) {
+        await db.delete(blocks).where(eq(blocks.id, existing.id));
+      }
+    }
+
+    // Update or create blocks
+    for (const block of blocksToSave) {
+      if (existingIds.has(block.id)) {
+        // Update existing block
+        await db
+          .update(blocks)
+          .set({
+            content: block.content,
+            settings: block.settings,
+            order: block.order,
+            parentId: block.parentId || null,
+            updatedAt: new Date(),
+          })
+          .where(eq(blocks.id, block.id));
+      } else {
+        // Create new block
+        await db.insert(blocks).values({
+          id: block.id,
+          entityId,
+          parentId: block.parentId || null,
+          type: block.type,
+          content: block.content || {},
+          order: block.order ?? 0,
+          settings: block.settings || {},
+        });
+      }
+    }
+
+    // Return updated blocks
+    const updatedBlocks = await db
+      .select()
+      .from(blocks)
+      .where(eq(blocks.entityId, entityId))
+      .orderBy(asc(blocks.order));
+
+    return NextResponse.json({ data: updatedBlocks });
+  } catch (error) {
+    console.error("Error saving blocks:", error);
+    return NextResponse.json(
+      { error: "Failed to save blocks" },
+      { status: 500 }
+    );
+  }
+}
+
 // PATCH /api/blocks - Bulk reorder blocks
 export async function PATCH(request: NextRequest) {
   try {
