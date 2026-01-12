@@ -4,6 +4,7 @@
  * Contains tabs for Element Settings and Global Settings.
  * Element Settings shows properties for the selected block.
  * Global Settings shows entity/activity-level configuration.
+ * When an activity is selected (in lesson editor), shows the LessonActivityEditor.
  */
 
 "use client";
@@ -14,13 +15,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BlockSettings } from "../blocks/settings/BlockSettings";
 import { ActivitySettings } from "../activities/ActivitySettings";
 import { VersionHistory } from "./VersionHistory";
+import { LessonActivityEditor } from "../lessons/LessonActivityEditor";
 
 export function RightPanel() {
-  const { selectedBlockId, rightPanelTab, setRightPanelTab, entityId, loadBlocks } =
-    useEditorStore();
+  const {
+    selectedBlockId,
+    rightPanelTab,
+    setRightPanelTab,
+    entityId,
+    loadBlocks,
+    selectedActivityId,
+    entityType,
+  } = useEditorStore();
   const selectedBlock = useEditorStore(
     selectedBlockId ? selectBlockById(selectedBlockId) : () => undefined
   );
+
+  // Show activity editor when an activity is selected in a lesson
+  if (entityType === "lesson" && selectedActivityId) {
+    return <LessonActivityEditor />;
+  }
 
   // Handle version restore - reload blocks
   const handleVersionRestore = () => {

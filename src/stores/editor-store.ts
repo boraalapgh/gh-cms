@@ -58,6 +58,7 @@ interface EditorState {
   // Selection
   selectedBlockId: string | null;
   hoveredBlockId: string | null;
+  selectedActivityId: string | null; // For inline activity editing in lessons
 
   // UI state
   devicePreview: DeviceType;
@@ -116,6 +117,7 @@ interface EditorActions {
   // Selection
   selectBlock: (id: string | null) => void;
   setHoveredBlock: (id: string | null) => void;
+  setSelectedActivityId: (id: string | null) => void;
 
   // UI
   setDevicePreview: (device: DeviceType) => void;
@@ -194,6 +196,7 @@ const initialState: EditorState = {
   blocks: [],
   selectedBlockId: null,
   hoveredBlockId: null,
+  selectedActivityId: null,
   devicePreview: "desktop",
   leftPanelCollapsed: false,
   rightPanelCollapsed: false,
@@ -579,6 +582,16 @@ export const useEditorStore = create<EditorState & EditorActions>()(
     setHoveredBlock: (id) => {
       set((state) => {
         state.hoveredBlockId = id;
+      });
+    },
+
+    setSelectedActivityId: (id) => {
+      set((state) => {
+        state.selectedActivityId = id;
+        // Clear block selection when selecting an activity
+        if (id) {
+          state.selectedBlockId = null;
+        }
       });
     },
 
