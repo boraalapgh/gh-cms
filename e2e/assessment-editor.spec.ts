@@ -47,7 +47,7 @@ test.describe("Assessment Editor", () => {
     await page.waitForTimeout(1000);
 
     // Verify block was added to layers panel
-    await expect(page.locator(".space-y-1 button").first()).toBeVisible();
+    await expect(page.getByTestId("layer-item").first()).toBeVisible();
 
     // Verify no infinite loop errors
     const errors = getErrors();
@@ -71,9 +71,9 @@ test.describe("Assessment Editor", () => {
     await addBlock(page, "Question");
     await page.waitForTimeout(500);
 
-    // Verify multiple blocks were added to layers panel (at least 2 buttons)
-    const layerButtons = page.locator(".space-y-1 button");
-    await expect(layerButtons.first()).toBeVisible();
+    // Verify multiple blocks were added to layers panel (at least 2 items)
+    const layerItems = page.getByTestId("layer-item");
+    await expect(layerItems.first()).toBeVisible();
 
     // Verify no infinite loop errors
     const errors = getErrors();
@@ -93,7 +93,7 @@ test.describe("Assessment Editor", () => {
     await page.waitForTimeout(500);
 
     // Click on the quiz question in the layers panel
-    await page.locator(".space-y-1 button").first().click();
+    await page.getByTestId("layer-item").first().click();
 
     // Verify right panel shows block properties
     await expect(page.locator("text=Block Type")).toBeVisible();

@@ -136,6 +136,8 @@ function LayerItem({
     <div
       ref={setNodeRef}
       style={style}
+      data-testid="layer-item"
+      data-block-type={block.type}
       className={`
         flex items-center gap-1 py-1 px-1 rounded text-xs cursor-pointer
         ${isSelected ? "bg-zinc-900 text-white" : "hover:bg-zinc-100 text-zinc-700"}
@@ -389,7 +391,7 @@ export function LayerTree({ blocks }: LayerTreeProps) {
         items={visibleItems.map((item) => item.block.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-0.5">
+        <div className="space-y-0.5" data-testid="layer-tree">
           {visibleItems.map(({ block, depth }) => {
             const childCount = getChildren(block.id).length;
             return (

@@ -48,7 +48,7 @@ test.describe("Lesson Editor", () => {
     await page.waitForTimeout(1000);
 
     // Verify section block was added - check layers panel for section block
-    await expect(page.locator(".space-y-1 button").first()).toBeVisible();
+    await expect(page.getByTestId("layer-item").first()).toBeVisible();
 
     // Verify no infinite loop errors (check for getSnapshot or infinite errors)
     const errors = getErrors();

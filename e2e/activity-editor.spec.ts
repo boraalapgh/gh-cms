@@ -43,10 +43,10 @@ test.describe("Activity Editor", () => {
     await page.waitForTimeout(500);
 
     // Verify block appears in layers - look for the text block in layers list
-    await expect(page.locator(".space-y-1").first()).toBeVisible();
+    await expect(page.getByTestId("layer-item").first()).toBeVisible();
 
     // Click on the block to select it
-    await page.locator(".space-y-1 button").first().click();
+    await page.getByTestId("layer-item").first().click();
 
     // Verify right panel shows block properties
     await expect(page.locator("text=Block Type")).toBeVisible();
@@ -132,7 +132,7 @@ test.describe("Activity Editor", () => {
     await page.waitForTimeout(500);
 
     // Click on the block in the layers panel to select it
-    await page.locator(".space-y-1 button").first().click();
+    await page.getByTestId("layer-item").first().click();
 
     // Verify it's selected (right panel shows properties)
     await expect(page.locator("text=Block Type")).toBeVisible();
