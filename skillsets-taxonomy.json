@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-12",
+  "description": "Skillsets and subskills taxonomy for e-learning content tagging. Activities are tagged with subskills, lessons/courses with skillsets.",
+  "skillsets": [
+    {
+      "id": "communication",
+      "name": "Communication",
+      "description": "Skills for effective verbal and written communication",
+      "icon": "MessageSquare",
+      "color": "#5a14bd",
+      "subskills": [
+        { "id": "active-listening", "name": "Active Listening", "description": "Fully concentrating on what is being said rather than just passively hearing" },
+        { "id": "clear-writing", "name": "Clear Writing", "description": "Writing that is concise, organized, and easy to understand" },
+        { "id": "difficult-conversations", "name": "Difficult Conversations", "description": "Navigating challenging or sensitive discussions effectively" },
+        { "id": "feedback", "name": "Feedback", "description": "Giving and receiving constructive feedback" },
+        { "id": "storytelling", "name": "Storytelling", "description": "Using narrative to engage and persuade" },
+        { "id": "stakeholder-comms", "name": "Stakeholder Communication", "description": "Tailoring messages for different audiences and stakeholders" },
+        { "id": "meeting-facilitation", "name": "Meeting Facilitation", "description": "Running effective, productive meetings" },
+        { "id": "empathy", "name": "Empathy", "description": "Understanding and sharing the feelings of others" },
+        { "id": "negotiation", "name": "Negotiation", "description": "Reaching mutually beneficial agreements" },
+        { "id": "presentation", "name": "Presentation", "description": "Delivering compelling presentations to groups" }
+      ]
+    },
+    {
+      "id": "leadership",
+      "name": "Leadership",
+      "description": "Skills for guiding and inspiring teams",
+      "icon": "Crown",
+      "color": "#0d9488",
+      "subskills": [
+        { "id": "coaching", "name": "Coaching", "description": "Developing others through guidance and support" },
+        { "id": "delegation", "name": "Delegation", "description": "Assigning tasks effectively while maintaining accountability" },
+        { "id": "motivation", "name": "Motivation", "description": "Inspiring and energizing team members" },
+        { "id": "decision-making", "name": "Decision Making", "description": "Making timely, informed decisions" },
+        { "id": "vision-setting", "name": "Vision Setting", "description": "Creating and communicating a compelling future state" },
+        { "id": "one-on-one-management", "name": "1:1 Management", "description": "Conducting effective individual meetings with direct reports" },
+        { "id": "conflict-resolution", "name": "Conflict Resolution", "description": "Resolving disagreements constructively" },
+        { "id": "accountability", "name": "Accountability", "description": "Taking ownership and holding others responsible" },
+        { "id": "hiring", "name": "Hiring", "description": "Recruiting and selecting the right talent" },
+        { "id": "performance-reviews", "name": "Performance Reviews", "description": "Evaluating and discussing performance effectively" }
+      ]
+    },
+    {
+      "id": "collaboration",
+      "name": "Collaboration",
+      "description": "Skills for working effectively with others",
+      "icon": "Users",
+      "color": "#059669",
+      "subskills": [
+        { "id": "cross-functional-work", "name": "Cross-Functional Work", "description": "Working across different teams and departments" },
+        { "id": "alignment", "name": "Alignment", "description": "Getting people on the same page" },
+        { "id": "team-rituals", "name": "Team Rituals", "description": "Establishing practices that strengthen team culture" },
+        { "id": "remote-collaboration", "name": "Remote Collaboration", "description": "Working effectively with distributed teams" },
+        { "id": "decision-logs", "name": "Decision Logs", "description": "Documenting decisions for transparency and reference" },
+        { "id": "hand-offs", "name": "Hand-offs", "description": "Smoothly transferring work between people or teams" },
+        { "id": "peer-feedback", "name": "Peer Feedback", "description": "Giving and receiving feedback among colleagues" },
+        { "id": "inclusion", "name": "Inclusion", "description": "Creating environments where everyone can contribute" },
+        { "id": "facilitation", "name": "Facilitation", "description": "Guiding group processes and discussions" },
+        { "id": "trust-building", "name": "Trust Building", "description": "Developing mutual confidence and reliability" }
+      ]
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity",
+      "description": "Skills for personal effectiveness and output",
+      "icon": "Zap",
+      "color": "#db2777",
+      "subskills": [
+        { "id": "prioritization", "name": "Prioritization", "description": "Identifying what matters most and focusing there" },
+        { "id": "time-management", "name": "Time Management", "description": "Using time effectively and efficiently" },
+        { "id": "focus", "name": "Focus", "description": "Maintaining attention on important tasks" },
+        { "id": "planning", "name": "Planning", "description": "Creating actionable plans for achieving goals" },
+        { "id": "execution", "name": "Execution", "description": "Following through on plans and commitments" },
+        { "id": "deep-work", "name": "Deep Work", "description": "Performing cognitively demanding tasks without distraction" },
+        { "id": "habit-building", "name": "Habit Building", "description": "Creating sustainable routines and practices" },
+        { "id": "goal-setting", "name": "Goal Setting", "description": "Defining clear, achievable objectives" },
+        { "id": "personal-organization", "name": "Personal Organization", "description": "Keeping track of tasks, notes, and information" },
+        { "id": "stress-management", "name": "Stress Management", "description": "Handling pressure and maintaining wellbeing" }
+      ]
+    },
+    {
+      "id": "problem-solving",
+      "name": "Problem Solving",
+      "description": "Skills for analyzing and resolving challenges",
+      "icon": "Lightbulb",
+      "color": "#f59e0b",
+      "subskills": [
+        { "id": "root-cause-analysis", "name": "Root Cause Analysis", "description": "Identifying underlying causes of problems" },
+        { "id": "systems-thinking", "name": "Systems Thinking", "description": "Understanding how parts of a system interrelate" },
+        { "id": "critical-thinking", "name": "Critical Thinking", "description": "Analyzing information objectively to make judgments" },
+        { "id": "experimentation", "name": "Experimentation", "description": "Testing hypotheses to learn and validate" },
+        { "id": "framing", "name": "Framing", "description": "Defining problems in ways that enable solutions" },
+        { "id": "ideation", "name": "Ideation", "description": "Generating creative ideas and possibilities" },
+        { "id": "trade-offs", "name": "Trade-offs", "description": "Evaluating competing options and their consequences" },
+        { "id": "risk-assessment", "name": "Risk Assessment", "description": "Identifying and evaluating potential risks" },
+        { "id": "learning-loops", "name": "Learning Loops", "description": "Building feedback mechanisms for continuous improvement" },
+        { "id": "troubleshooting", "name": "Troubleshooting", "description": "Diagnosing and fixing problems systematically" }
+      ]
+    },
+    {
+      "id": "customer-focus",
+      "name": "Customer Focus",
+      "description": "Skills for understanding and serving customers",
+      "icon": "Heart",
+      "color": "#ef4444",
+      "subskills": [
+        { "id": "customer-interviews", "name": "Customer Interviews", "description": "Gathering insights directly from customers" },
+        { "id": "empathy-mapping", "name": "Empathy Mapping", "description": "Understanding customer thoughts, feelings, and motivations" },
+        { "id": "service-recovery", "name": "Service Recovery", "description": "Turning negative experiences into positive ones" },
+        { "id": "handling-complaints", "name": "Handling Complaints", "description": "Addressing customer concerns professionally" },
+        { "id": "value-delivery", "name": "Value Delivery", "description": "Ensuring customers receive meaningful benefits" },
+        { "id": "journey-mapping", "name": "Journey Mapping", "description": "Understanding the end-to-end customer experience" },
+        { "id": "support-mindset", "name": "Support Mindset", "description": "Approaching interactions with a service orientation" },
+        { "id": "quality-mindset", "name": "Quality Mindset", "description": "Maintaining high standards in all customer interactions" },
+        { "id": "expectation-setting", "name": "Expectation Setting", "description": "Managing what customers anticipate" },
+        { "id": "relationship-management", "name": "Relationship Management", "description": "Building and maintaining customer relationships" }
+      ]
+    },
+    {
+      "id": "emotional-intelligence",
+      "name": "Emotional Intelligence",
+      "description": "Skills for understanding and managing emotions",
+      "icon": "Brain",
+      "color": "#8b5cf6",
+      "subskills": [
+        { "id": "self-awareness", "name": "Self-Awareness", "description": "Understanding your own emotions, strengths, and weaknesses" },
+        { "id": "self-regulation", "name": "Self-Regulation", "description": "Managing your emotions and impulses" },
+        { "id": "social-awareness", "name": "Social Awareness", "description": "Understanding others' emotions and social dynamics" },
+        { "id": "resilience", "name": "Resilience", "description": "Bouncing back from setbacks and challenges" },
+        { "id": "managing-stress", "name": "Managing Stress", "description": "Coping with pressure in healthy ways" },
+        { "id": "confidence", "name": "Confidence", "description": "Believing in your abilities while remaining humble" },
+        { "id": "growth-mindset", "name": "Growth Mindset", "description": "Viewing abilities as developable through effort" },
+        { "id": "handling-ambiguity", "name": "Handling Ambiguity", "description": "Operating effectively with incomplete information" },
+        { "id": "handling-criticism", "name": "Handling Criticism", "description": "Receiving negative feedback constructively" },
+        { "id": "compassion", "name": "Compassion", "description": "Showing kindness and understanding to others" }
+      ]
+    },
+    {
+      "id": "strategy",
+      "name": "Strategy",
+      "description": "Skills for long-term thinking and planning",
+      "icon": "Target",
+      "color": "#0ea5e9",
+      "subskills": [
+        { "id": "market-understanding", "name": "Market Understanding", "description": "Knowing your market, customers, and opportunities" },
+        { "id": "competitive-analysis", "name": "Competitive Analysis", "description": "Understanding competitors and differentiation" },
+        { "id": "strategic-planning", "name": "Strategic Planning", "description": "Creating long-term plans to achieve objectives" },
+        { "id": "okrs", "name": "OKRs", "description": "Setting and managing objectives and key results" },
+        { "id": "strategic-alignment", "name": "Strategic Alignment", "description": "Ensuring activities support strategic goals" },
+        { "id": "business-thinking", "name": "Business Thinking", "description": "Understanding business models and value creation" },
+        { "id": "resource-planning", "name": "Resource Planning", "description": "Allocating resources effectively" },
+        { "id": "roadmapping", "name": "Roadmapping", "description": "Planning sequences of initiatives over time" },
+        { "id": "measuring-outcomes", "name": "Measuring Outcomes", "description": "Tracking progress and impact" },
+        { "id": "change-management", "name": "Change Management", "description": "Leading organizational transitions" }
+      ]
+    },
+    {
+      "id": "learning-development",
+      "name": "Learning & Development",
+      "description": "Skills for teaching and developing others",
+      "icon": "GraduationCap",
+      "color": "#14b8a6",
+      "subskills": [
+        { "id": "coaching-skills", "name": "Coaching Skills", "description": "Guiding others to develop their capabilities" },
+        { "id": "ld-facilitation", "name": "Facilitation", "description": "Leading learning experiences and workshops" },
+        { "id": "instructional-design", "name": "Instructional Design", "description": "Creating effective learning experiences" },
+        { "id": "assessment-design", "name": "Assessment Design", "description": "Creating ways to measure learning" },
+        { "id": "knowledge-management", "name": "Knowledge Management", "description": "Capturing and sharing organizational knowledge" },
+        { "id": "mentoring", "name": "Mentoring", "description": "Guiding others' career and personal development" },
+        { "id": "workshop-design", "name": "Workshop Design", "description": "Planning engaging group learning sessions" },
+        { "id": "feedback-loops", "name": "Feedback Loops", "description": "Creating systems for continuous improvement" },
+        { "id": "content-curation", "name": "Content Curation", "description": "Selecting and organizing learning resources" },
+        { "id": "evaluation", "name": "Evaluation", "description": "Assessing effectiveness of learning programs" }
+      ]
+    }
+  ],
+  "metadata": {
+    "totalSkillsets": 9,
+    "totalSubskills": 90,
+    "taggingRules": {
+      "activity": "Must be tagged with exactly 1 subskill (parent skillset is implied)",
+      "lesson": "Must be tagged with exactly 1 skillset",
+      "course": "Must be tagged with exactly 1 skillset"
+    }
+  }
+}
